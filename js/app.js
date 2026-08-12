@@ -441,10 +441,22 @@ async function setupDetail(sample) {
     maybeEnablePlayButton();
   }, { once: true });
   if (videoEl) {
-    videoEl.addEventListener("loadedmetadata", () => {
+    // The <video> tag's `src` starts loading as soon as renderDetail() injects the markup,
+    // which is before this function even runs -- and the DOA fetch above yields control back
+    // to the browser, so `loadedmetadata` can fire (e.g. a cached/fast video load) before we
+    // get here to listen for it. Check readyState first so an already-loaded video doesn't
+    // leave the play button disabled forever; also resolve on `error` so a broken video file
+    // can't do the same.
+    const markVideoReady = () => {
       videoReady = true;
       maybeEnablePlayButton();
-    }, { once: true });
+    };
+    if (videoEl.readyState >= 1 /* HAVE_METADATA */) {
+      markVideoReady();
+    } else {
+      videoEl.addEventListener("loadedmetadata", markVideoReady, { once: true });
+      videoEl.addEventListener("error", markVideoReady, { once: true });
+    }
   }
 
   const mixtureWav = `${sample.path}/${MIXTURE_STEM}.wav`;
