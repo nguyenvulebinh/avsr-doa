@@ -1,0 +1,660 @@
+:root {
+  --bg: #f6f5f1;
+  --bg-grid: #eceae3;
+  --ink: #17181c;
+  --ink-soft: #55585f;
+  --line: #d8d5cc;
+  --accent: #1f5fa8;   /* spectrum blue */
+  --peak: #c23b3b;     /* peak red */
+  --selected: #1f8a4c; /* selected ray green */
+  --chip-bg: #ffffff;
+  --chip-active-bg: #17181c;
+  --chip-active-ink: #f6f5f1;
+  --radius: 10px;
+  --font-display: "Space Grotesk", ui-sans-serif, system-ui, sans-serif;
+  --font-mono: "JetBrains Mono", ui-monospace, "SF Mono", Menlo, monospace;
+}
+
+* {
+  box-sizing: border-box;
+}
+
+html, body {
+  margin: 0;
+  padding: 0;
+}
+
+body {
+  background: linear-gradient(180deg, var(--bg) 0%, var(--bg) 55%, var(--bg-grid) 100%);
+  background-attachment: fixed;
+  color: var(--ink);
+  font-family: var(--font-mono);
+  font-size: 15px;
+  line-height: 1.55;
+  -webkit-font-smoothing: antialiased;
+}
+
+.page {
+  max-width: 880px;
+  margin: 0 auto;
+  padding: 48px 24px 80px;
+}
+
+h1, h2, h3 {
+  font-family: var(--font-display);
+  font-weight: 600;
+  letter-spacing: -0.01em;
+  margin: 0;
+}
+
+a {
+  color: var(--accent);
+  text-decoration: none;
+}
+
+a:hover {
+  text-decoration: underline;
+}
+
+button {
+  font-family: inherit;
+  cursor: pointer;
+}
+
+/* ---------- Landing ---------- */
+
+.hero {
+  margin-bottom: 40px;
+}
+
+.hero__title {
+  font-size: 2.1rem;
+  margin-bottom: 14px;
+}
+
+.hero__lede {
+  color: var(--ink-soft);
+  max-width: 640px;
+  font-size: 0.98rem;
+}
+
+.section-label {
+  font-family: var(--font-display);
+  font-size: 0.8rem;
+  font-weight: 600;
+  text-transform: uppercase;
+  letter-spacing: 0.08em;
+  color: var(--ink-soft);
+  margin-bottom: 12px;
+}
+
+/* ---------- Recording setup ---------- */
+
+.setup {
+  margin-bottom: 40px;
+}
+
+.setup__figure {
+  margin: 0;
+  display: flex;
+  align-items: flex-start;
+  gap: 20px;
+}
+
+.setup__img {
+  width: 220px;
+  flex-shrink: 0;
+  border-radius: var(--radius);
+  border: 1px solid var(--line);
+  display: block;
+}
+
+.setup__note {
+  margin: 4px 0 0;
+  max-width: 640px;
+  color: var(--ink-soft);
+  font-size: 0.9rem;
+}
+
+.section-label--spaced {
+  margin-top: 40px;
+}
+
+.gallery-grid {
+  display: grid;
+  grid-template-columns: repeat(2, 1fr);
+  gap: 16px;
+}
+
+/* AVSR-DOA Gallery: one recording per row instead of a 2-up grid, since its cards preview a
+   very wide/short lip-video crop (see .gallery-card__preview--video) rather than a square
+   polar chart. */
+.gallery-grid--single {
+  grid-template-columns: 1fr;
+}
+
+.gallery-card {
+  display: block;
+  background: #fff;
+  border: 1px solid var(--line);
+  border-radius: var(--radius);
+  padding: 12px;
+  color: inherit;
+  transition: border-color 0.15s ease, box-shadow 0.15s ease;
+}
+
+.gallery-card:hover {
+  border-color: var(--accent);
+  box-shadow: 0 2px 12px rgba(23, 24, 28, 0.06);
+  text-decoration: none;
+}
+
+.gallery-card__preview {
+  position: relative;
+  width: 100%;
+  aspect-ratio: 1 / 1;
+}
+
+.gallery-card__preview canvas {
+  display: block;
+  width: 100%;
+  height: 100%;
+}
+
+/* AVSR-DOA Gallery cards preview the recording's first video frame, cropped to the same
+   wide/short aspect ratio as the lip-video strip in the player (see .player__video-wrap),
+   instead of a square polar chart. */
+.gallery-card__preview--video {
+  aspect-ratio: 1920 / 242;
+}
+
+.gallery-card__preview-media {
+  display: block;
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+  background: #0b0c10;
+}
+
+.gallery-card__title {
+  font-family: var(--font-display);
+  font-size: 1.05rem;
+  font-weight: 600;
+  color: var(--ink);
+  text-align: center;
+  margin-top: 10px;
+}
+
+/* ---------- Detail ---------- */
+
+.detail__back {
+  display: inline-block;
+  font-size: 0.85rem;
+  color: var(--ink-soft);
+  margin-bottom: 20px;
+}
+
+.detail__back:hover {
+  color: var(--accent);
+}
+
+.detail__title {
+  font-size: 1.6rem;
+  margin-bottom: 24px;
+}
+
+/* ---------- Lip video strip (optional, sits inside the player right above the mel) ---------- */
+
+.player__video-wrap {
+  width: 100%;
+  aspect-ratio: 1920 / 242;
+  background: #0b0c10;
+  border-radius: 6px;
+  overflow: hidden;
+}
+
+.player__video {
+  display: block;
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+}
+
+.detail__grid {
+  display: grid;
+  grid-template-columns: 55% 1fr;
+  gap: 24px;
+  align-items: start;
+  margin-bottom: 32px;
+}
+
+.polar-wrap {
+  position: relative;
+  background: #fff;
+  border: 1px solid var(--line);
+  border-radius: var(--radius);
+  padding: 12px;
+  overflow: visible;
+}
+
+.doa-window-label {
+  position: absolute;
+  bottom: 8px;
+  left: 50%;
+  transform: translateX(-50%);
+  font-size: 0.72rem;
+  color: var(--ink-soft);
+  white-space: nowrap;
+}
+
+.polar-wrap canvas {
+  display: block;
+  width: 100%;
+  height: auto;
+  aspect-ratio: 1 / 1;
+}
+
+.controls-col {
+  display: flex;
+  flex-direction: column;
+  gap: 22px;
+}
+
+.peaks-list {
+  margin: 0;
+  padding: 0;
+  list-style: none;
+  font-size: 0.88rem;
+  color: var(--ink-soft);
+}
+
+.peaks-list li {
+  display: flex;
+  justify-content: space-between;
+  padding: 3px 0;
+}
+
+.peaks-list .peak-theta {
+  color: var(--peak);
+  font-weight: 500;
+}
+
+.theta-chips {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 8px;
+}
+
+.chip {
+  font-family: var(--font-mono);
+  font-size: 0.85rem;
+  padding: 7px 12px;
+  border-radius: 999px;
+  border: 1px solid var(--line);
+  background: var(--chip-bg);
+  color: var(--ink);
+}
+
+.chip:hover {
+  border-color: var(--accent);
+}
+
+.chip.is-active {
+  background: var(--chip-active-bg);
+  border-color: var(--chip-active-bg);
+  color: var(--chip-active-ink);
+}
+
+/* ---------- Mel-backed audio player ---------- */
+/* One player/detail layout for every sample: play button sits inline beside the mel viewport
+   (vertically centered against just the mel's own height via .player__mel-row), with an
+   optional lip video and always-present zoom controls above/below it. */
+
+.player {
+  position: relative;
+  background: #1a1624;
+  border: 1px solid var(--line);
+  border-radius: var(--radius);
+  padding: 14px;
+  overflow: hidden;
+}
+
+.player__play {
+  width: 48px;
+  height: 48px;
+  border-radius: 50%;
+  border: none;
+  background: #2aa9a1;
+  color: #fff;
+  font-size: 1.05rem;
+  display: grid;
+  place-items: center;
+  flex: 0 0 auto;
+  z-index: 2;
+  transition: transform 0.12s ease, background 0.12s ease;
+}
+
+.player__play:hover:not(:disabled) {
+  background: #239890;
+  transform: scale(1.04);
+}
+
+.player__play:disabled {
+  opacity: 0.45;
+  cursor: default;
+}
+
+.player__body {
+  position: relative;
+  min-width: 0;
+  z-index: 1;
+}
+
+.player__toggle-row {
+  display: flex;
+  justify-content: flex-end;
+  margin-bottom: 8px;
+}
+
+/* Zoom controls sit directly beside the time display, both right-aligned in the row right
+   below the mel. */
+.player__footer-row {
+  display: flex;
+  justify-content: flex-end;
+  align-items: center;
+  gap: 12px;
+  margin-top: 8px;
+}
+
+.zoom-controls {
+  display: inline-flex;
+  align-items: center;
+  gap: 6px;
+  color: rgba(255, 255, 255, 0.7);
+  font-size: 0.78rem;
+}
+
+.zoom-slider {
+  width: 72px;
+  height: 4px;
+  accent-color: #2aa9a1;
+  cursor: pointer;
+}
+
+.zoom-slider:disabled {
+  opacity: 0.3;
+  cursor: default;
+}
+
+.zoom-btn {
+  width: 22px;
+  height: 22px;
+  border-radius: 50%;
+  border: 1px solid rgba(255, 255, 255, 0.25);
+  background: transparent;
+  color: #fff;
+  font-size: 0.9rem;
+  line-height: 1;
+  display: grid;
+  place-items: center;
+  padding: 0;
+  transition: border-color 0.12s ease, color 0.12s ease;
+}
+
+.zoom-btn:hover:not(:disabled) {
+  border-color: #2aa9a1;
+  color: #2aa9a1;
+}
+
+.zoom-btn:disabled {
+  opacity: 0.3;
+  cursor: default;
+}
+
+.toggle {
+  display: inline-flex;
+  align-items: center;
+  gap: 10px;
+  cursor: pointer;
+  user-select: none;
+  color: rgba(255, 255, 255, 0.88);
+  font-size: 0.82rem;
+}
+
+.toggle input {
+  position: absolute;
+  opacity: 0;
+  pointer-events: none;
+}
+
+.toggle__track {
+  position: relative;
+  width: 42px;
+  height: 24px;
+  border-radius: 999px;
+  background: rgba(255, 255, 255, 0.22);
+  transition: background 0.15s ease;
+  flex-shrink: 0;
+}
+
+.toggle__track::after {
+  content: "";
+  position: absolute;
+  top: 3px;
+  left: 3px;
+  width: 18px;
+  height: 18px;
+  border-radius: 50%;
+  background: #fff;
+  transition: transform 0.15s ease;
+}
+
+.toggle input:checked + .toggle__track {
+  background: #2aa9a1;
+}
+
+.toggle input:checked + .toggle__track::after {
+  transform: translateX(18px);
+}
+
+.toggle__label {
+  font-family: var(--font-display);
+  font-weight: 600;
+  white-space: nowrap;
+}
+
+/* Video + mel stack in one column (so they render at the same width). */
+.player__stage {
+  display: flex;
+  gap: 12px;
+}
+
+.player__media-col {
+  flex: 1 1 auto;
+  min-width: 0;
+  display: flex;
+  flex-direction: column;
+  gap: 10px;
+}
+
+/* The play button sits beside the mel as a row sibling (not the video above it), centered
+   against just the mel's own height rather than the bottom of the whole media column. */
+.player__mel-row {
+  display: flex;
+  align-items: center;
+  gap: 12px;
+}
+
+/* ---------- Sliding mel viewport ---------- */
+/* The mel image can be far wider than the viewport; .player__mel-track pans horizontally so
+   the current playhead always stays centered, DAW-style, instead of stretching the whole
+   (possibly multi-minute) recording into a fixed-width bar. */
+
+.player__mel {
+  position: relative;
+  flex: 1 1 auto;
+  min-width: 0;
+  height: 96px;
+  border-radius: 8px;
+  overflow: hidden;
+  cursor: pointer;
+  background: #0b0c10;
+  touch-action: none;
+}
+
+.player__mel-track {
+  position: absolute;
+  top: 0;
+  left: 0;
+  height: 100%;
+  will-change: transform;
+}
+
+.player__mel-img {
+  display: block;
+  height: 100%;
+  width: auto;
+  max-width: none;
+  pointer-events: none;
+  user-select: none;
+}
+
+/* left is set inline by updateMelPosition() -- it tracks the actual current-time position,
+   which is only centered when the track has room to pan on both sides; near the start/end
+   (clamped) it slides toward that edge instead. */
+.player__playhead {
+  position: absolute;
+  top: 0;
+  bottom: 0;
+  left: 50%;
+  width: 2px;
+  margin-left: -1px;
+  background: #2aa9a1;
+  pointer-events: none;
+  z-index: 2;
+}
+
+.player__time {
+  font-size: 0.78rem;
+  color: rgba(255, 255, 255, 0.7);
+  text-align: right;
+}
+
+/* ---------- Loading indicators ---------- */
+/* A small floating box shown over a resource's container (DOA polar chart, mel viewport,
+   gallery card preview) while its data/image is still being fetched -- hidden (not removed,
+   so no layout shift) once the resource is ready. */
+
+.loading-box {
+  position: absolute;
+  inset: 0;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  gap: 8px;
+  background: rgba(246, 245, 241, 0.6);
+  border-radius: inherit;
+  font-size: 0.78rem;
+  color: var(--ink-soft);
+  pointer-events: none;
+  z-index: 3;
+  opacity: 1;
+  transition: opacity 0.25s ease;
+}
+
+.loading-box.is-hidden {
+  opacity: 0;
+  visibility: hidden;
+}
+
+.loading-box--dark {
+  background: rgba(11, 12, 16, 0.65);
+  color: rgba(255, 255, 255, 0.85);
+}
+
+.loading-box__spinner {
+  width: 14px;
+  height: 14px;
+  flex: 0 0 auto;
+  border: 2px solid currentColor;
+  border-top-color: transparent;
+  border-radius: 50%;
+  opacity: 0.6;
+  animation: loading-box-spin 0.7s linear infinite;
+}
+
+@keyframes loading-box-spin {
+  to {
+    transform: rotate(360deg);
+  }
+}
+
+/* ---------- Misc ---------- */
+
+.error-state {
+  color: var(--peak);
+  font-size: 0.9rem;
+}
+
+/* ---------- Mobile ---------- */
+
+@media (max-width: 640px) {
+  .page {
+    padding: 32px 16px 60px;
+  }
+
+  .hero__title {
+    font-size: 1.7rem;
+  }
+
+  .detail__grid {
+    grid-template-columns: 1fr;
+  }
+
+  .player {
+    padding: 12px;
+  }
+
+  .player__mel {
+    height: 80px;
+  }
+
+  .player__media-col {
+    gap: 8px;
+  }
+
+  .doa-window-label {
+    font-size: 0.66rem;
+  }
+
+  .player__footer-row {
+    flex-wrap: wrap;
+    gap: 8px;
+  }
+
+  .zoom-controls {
+    font-size: 0.72rem;
+  }
+
+  .zoom-slider {
+    width: 52px;
+  }
+
+  .toggle__label {
+    font-size: 0.78rem;
+  }
+
+  .gallery-grid {
+    grid-template-columns: 1fr;
+  }
+
+  .setup__figure {
+    flex-direction: column;
+    gap: 12px;
+  }
+
+  .setup__img {
+    width: 100%;
+    max-width: 280px;
+  }
+}
